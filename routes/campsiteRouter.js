@@ -5,6 +5,8 @@ const Campsite = require('../models/campsite'); //up a directory folder is ..
 
 const campsiteRouter = express.Router();
 
+campsiteRouter.use(bodyParser.json());
+
 //In the route method give a single arguement of a path '/' set up campsite path in server.js
 //Single statement handles all the endpoints for routing to campsites.
 campsiteRouter
