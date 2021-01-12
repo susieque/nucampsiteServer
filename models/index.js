@@ -3,14 +3,13 @@ const Campsite = require('./models/campsite');
 
 const url = 'mongodb://localhost:27017/nucampsite';
 const connect = mongoose.connect(url, {
-    useCreateIndex: true,
-    useFindAndModify: false,
+	useCreateIndex: true,
+	useFindAndModify: false,
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 });
 
 connect.then(() => {
-
 	console.log('Connected correctly to server');
 
 	Campsite.create({

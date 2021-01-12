@@ -33,7 +33,7 @@ const partnerSchema = new Schema(
 			type: String,
 			required: true,
 		},
-		blogPosts: [blogPostSchema],
+		// blogPosts: [blogPostSchema],
 	},
 	{
 		timestamps: true,
