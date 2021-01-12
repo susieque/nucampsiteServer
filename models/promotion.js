@@ -25,8 +25,10 @@ const promotionSchema = new Schema({
     description: {
         type: String,
         required: true
-    }
-}, {
+    },
+    // blogPosts: [blogPostSchema],
+},
+{
     timestamps: true
 });
 
