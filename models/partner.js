@@ -4,39 +4,39 @@ const blogPostSchema = new Schema(
 	{
 		title: {
 			type: String,
-			required: true,
+			required: true
 		},
 		description: {
 			type: String,
-			required: true,
-		},
+			required: true
+		}
 	},
 	{
-		timestamps: true,
+		timestamps: true
 	}
 );
 const partnerSchema = new Schema(
 	{
 		name: {
 			type: String,
-			required: true,
+			required: true
 		},
 		image: {
 			type: String,
-			required: false,
+			required: false
 		},
 		featured: {
 			type: Boolean,
-			default: false,
+			default: false
 		},
 		description: {
 			type: String,
-			required: true,
-		},
+			required: true
+		}
 		// blogPosts: [blogPostSchema],
 	},
 	{
-		timestamps: true,
+		timestamps: true
 	}
 );
 const Partner = mongoose.model('Partner', partnerSchema);

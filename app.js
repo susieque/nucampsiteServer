@@ -19,7 +19,7 @@ const connect = mongoose.connect(url, {
 	useCreateIndex: true,
 	useFindAndModify: false,
 	useNewUrlParser: true,
-	useUnifiedTopology: true,
+	useUnifiedTopology: true
 });
 
 connect.then(
@@ -44,40 +44,23 @@ app.use(
 		secret: '12345-67890-09876-54321',
 		saveUninitialized: false,
 		resave: false,
-		store: new FileStore(),
+		store: new FileStore()
 	})
 );
+
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
 
 //users authenticate before having access to any data from server. If you don't mind them having access put the below line under the express.static line.
 function auth(req, res, next) {
 	console.log(req.session);
 
 	if (!req.session.user) {
-		const authHeader = req.headers.authorization;
-		if (!authHeader) {
-			const err = new Error('You are not authenticated!');
-			res.setHeader('WWW-Authenticate', 'Basic');
-			err.status = 401;
-			return next(err);
-		}
-		//When there is authorization header we can skip to the next part. Here parse the authorization header, validate username and password.
-		//Buffer global class is one of few globals in Node (dont need to require it or do anything to use it) it has a static method FROM Buffer(we'll use to decode username and password). put them in new array - username at index 0, password index 1 in array.
-		const auth = Buffer.from(authHeader.split(' ')[1], 'base64')
-			.toString()
-			.split(':');
-		const user = auth[0];
-		const pass = auth[1];
-		if (user === 'admin' && pass === 'password') {
-			req.session.user = 'admin';
-			return next(); // authorized
-		} else {
-			const err = new Error('You are not authenticated!');
-			res.setHeader('WWW-Authenticate', 'Basic');
-			err.status = 401;
-			return next(err);
-		}
+		const err = new Error('You are not authenticated!');
+		err.status = 401;
+		return next(err);
 	} else {
-		if (req.session.user === 'admin') {
+		if (req.session.user === 'authenticated') {
 			return next();
 		} else {
 			const err = new Error('You are not authenticated!');
