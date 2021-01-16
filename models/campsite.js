@@ -20,7 +20,7 @@ const commentSchema =new Schema ({
         ref: 'User'
     }
 }, {
-    timestamp: true    
+    timestamps: true    
 });
 
 const campsiteSchema = new Schema({
