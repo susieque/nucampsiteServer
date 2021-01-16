@@ -1,7 +1,7 @@
 //This router handles the GET PUT POST and DELETE endpoints. for any path that begins with /campsites, including those using route parameters to spec a particular campsite by its id.
 const express = require('express');
-const bodyParser = require('body-parser');
-const Campsite = require('../models/campsite'); //up a directory folder is ..
+const bodyParser = require('body-parser'); //DO WE STILL NEED THIS?
+const Campsite = require('../models/campsite'); 
 const authenticate = require('../authenticate');
 
 const campsiteRouter = express.Router();
@@ -14,6 +14,7 @@ campsiteRouter
 	.route('/')
 	.get((req, res, next) => {
 		Campsite.find()
+			.populate('comments.author')
 			.then((campsites) => {
 				res.statusCode = 200;
 				res.setHeader('Content-Type', 'application/json');
@@ -49,6 +50,7 @@ campsiteRouter
 	.route('/:campsiteId')
 	.get((req, res, next) => {
 		Campsite.findById(req.params.campsiteId)
+			.populate('comments.author')
 			.then((campsite) => {
 				res.statusCode = 200;
 				res.setHeader('Content-Type', 'application/json');
@@ -91,11 +93,16 @@ campsiteRouter
 	.route('/:campsiteId/comments')
 	.get((req, res, next) => {
 		Campsite.findById(req.params.campsiteId)
+			.populate('comments.author')
 			.then((campsite) => {
 				if (campsite) {
 					res.statusCode = 200;
 					res.setHeader('Content-Type', 'application/json');
-					res.json(campsites);
+					res.json(campsite.comments);
+				} else {
+					err = new Error(`Campsite ${req.params.campsiteId} not found`);
+					err.status = 404;
+					return next(err);
 				}
 			})
 			.catch((err) => next(err));
@@ -104,6 +111,7 @@ campsiteRouter
 		Campsite.findById(req.params.campsiteId)
 			.then((campsite) => {
 				if (campsite) {
+					req.body.author = req.user._id; //it will have the id of user that submitted comment
 					campsite.comments.push(req.body);
 					campsite
 						.save()
@@ -155,6 +163,7 @@ campsiteRouter
 	.route('/:campsiteId/comments/:commentId')
 	.get((req, res, next) => {
 		Campsite.findById(req.params.campsiteId)
+			.populate('comments.author')
 			.then((campsite) => {
 				if (campsite && campsite.comments.id(req.params.commentId)) {
 					res.statusCode = 200;

@@ -1,5 +1,5 @@
 const express = require('express');
-const bodyParser = require('body-parser');
+const bodyParser = require('body-parser');  //DO WE STILL NEED THIS?
 const Promotion = require('../models/promotion');
 const authenticate = require('../authenticate');
 
