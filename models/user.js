@@ -11,11 +11,13 @@ const userSchema = new Schema({
         type: String,
         default: ''
     },
+    facbookId: String,
 	admin: {
 		type: Boolean,
 		default: false
 	}
 });
+
 userSchema.plugin(passportLocalMongoose); //provides additional authentication related methods on schema & model
 
 module.exports = mongoose.model('User', userSchema);
